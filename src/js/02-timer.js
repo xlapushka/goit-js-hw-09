@@ -6,17 +6,16 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const refs = {
   btnStart: document.querySelector('.btn'),
   input: document.querySelector('#datetime-picker'),
-  countdounDays: document.querySelector('[data-days]'),
-  countdounHours: document.querySelector('[data-hours]'),
-  countdounMinutes: document.querySelector('[data-minutes]'),
-  countdounSeconds: document.querySelector('[data-seconds]'),
+  countdownDays: document.querySelector('[data-days]'),
+  countdownHours: document.querySelector('[data-hours]'),
+  countdownMinutes: document.querySelector('[data-minutes]'),
+  countdownSeconds: document.querySelector('[data-seconds]'),
   interval: 1000,
 };
 
-let timerUpdate;
 let delta = 0;
 
-const flatpickr = new flatpickr('#datetime-picker', {
+const flatpickr = flatpickr('#datetime-picker', {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -26,42 +25,41 @@ const flatpickr = new flatpickr('#datetime-picker', {
     let currentDate = new Date();
     delta = choosenDate.getTime() - currentDate.getTime();
 
+    refs.btnStart.setAttribute('disabled', 'disabled');
+
     if (choosenDate.getTime() < currentDate.getTime()) {
-      refs.btnStart.setAttribute('disabled', 'disabled');
-      refs.countdounDays.textContent = addLeadingZero(0);
-      refs.countdounHours.textContent = addLeadingZero(0);
-      refs.countdounMinutes.textContent = addLeadingZero(0);
-      refs.countdounSeconds.textContent = addLeadingZero(0);
+      refs.countdownDays.textContent = addLeadingZero(0);
+      refs.countdownHours.textContent = addLeadingZero(0);
+      refs.countdownMinutes.textContent = addLeadingZero(0);
+      refs.countdownSeconds.textContent = addLeadingZero(0);
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
-      makebuttonActive();
+      refs.btnStart.removeAttribute('disabled');
     }
   },
 });
 
-function makebuttonActive() {
-  refs.btnStart.removeAttribute('disabled');
+refs.btnStart.setAttribute('disabled', 'disabled');
+refs.btnStart.addEventListener('click', startCountdown);
 
-  // ======Тут має бути знімання всіх зайвих слухачів, щоб почав працювати слухач на кнопці коректно=========
-  refs.btnStart.addEventListener('click', startCountdown());
-};
 
 function startCountdown() {
   let convertToDate = convertMs(delta);
 
   refs.btnStart.setAttribute('disabled', 'disabled');
+  refs.btnStart.removeAttribute('disabled');
 
-  timerUpdate = setInterval(() => {
+  setInterval(() => {
     if (delta >= 0) {
       convertToDate = convertMs(delta);
-      refs.countdounDays.textContent = addLeadingZero(convertToDate.days);
-      refs.countdounHours.textContent = addLeadingZero(convertToDate.hours);
-      refs.countdounMinutes.textContent = addLeadingZero(convertToDate.minutes);
-      refs.countdounSeconds.textContent = addLeadingZero(convertToDate.seconds);
+      refs.countdownDays.textContent = addLeadingZero(convertToDate.days);
+      refs.countdownHours.textContent = addLeadingZero(convertToDate.hours);
+      refs.countdownMinutes.textContent = addLeadingZero(convertToDate.minutes);
+      refs.countdownSeconds.textContent = addLeadingZero(convertToDate.seconds);
       delta -= 1000;
     }
   }, refs.interval);
-};
+}
 
 function convertMs(ms) {
   const second = 1000;
@@ -75,8 +73,8 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
-};
+}
 
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
-};
+}
