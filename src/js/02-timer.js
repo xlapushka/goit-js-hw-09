@@ -47,7 +47,7 @@ function startCountdown() {
   let convertToDate = convertMs(delta);
 
   refs.btnStart.setAttribute('disabled', 'disabled');
-  refs.btnStart.removeAttribute('disabled');
+  refs.input.setAttribute('disabled', 'disabled');
 
   setInterval(() => {
     if (delta >= 0) {
