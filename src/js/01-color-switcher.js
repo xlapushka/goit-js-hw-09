@@ -12,7 +12,7 @@ refs.btnStop.addEventListener('click', stopChangingBackgroundColor);
 
 
 function changeBackGroundByClick() {
-  color = getRandomHexColor();
+  let color = getRandomHexColor();
   refs.body.setAttribute('style', `background-color: ${color}`);
 
   startChangingBackgroundColor();
@@ -20,7 +20,7 @@ function changeBackGroundByClick() {
 
 function startChangingBackgroundColor() {
   changingColor = setInterval(() => {
-    color = getRandomHexColor();
+    let color = getRandomHexColor();
     refs.body.setAttribute('style', `background-color: ${color}`);
   }, refs.interval);
 
@@ -32,7 +32,6 @@ function stopChangingBackgroundColor() {
   clearInterval(changingColor);
   refs.btnStop.setAttribute('disabled', 'disabled');
   refs.btnStart.removeAttribute('disabled', 'disabled');
-  // refs.btnStart.addEventListener('click', changeBackGroundByClick);
 }
 
 function getRandomHexColor() {
