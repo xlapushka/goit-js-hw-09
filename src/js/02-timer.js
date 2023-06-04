@@ -15,7 +15,7 @@ const refs = {
 
 let delta = 0;
 
-const flatpickr = flatpickr('#datetime-picker', {
+const flatpickrr = flatpickr(refs.input, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
